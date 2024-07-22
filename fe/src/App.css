@@ -1,0 +1,25 @@
+/* styles.css */
+
+/* Base error message style */
+.error-message {
+  color: red;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+/* Animation for disappearing */
+.fade-out {
+  animation: fadeOut 2s ease-out forwards;
+}
+
+/* Keyframes for fade out animation */
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+    color: red;
+  }
+  100% {
+    opacity: 0;
+    color: transparent;
+  }
+}
