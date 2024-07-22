@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import api from './api/axios';
+import './App.css';
 import { RESULT, MAX_HISTORY_SIZE } from './constants';
 import { PlayResult, Choice } from './interfaces';
 
@@ -61,26 +62,33 @@ const App = () => {
   }, []);
 
   return (
-    <div>
-      <h1>Play your next move</h1>
+    <div className='app-container'>
+      <h1 className='title'>Play your next move</h1>
       {error && (
         <p className={`error-message ${error ? 'fade-out' : ''}`}>{error}</p>
       )}
-      {choices.length > 0 &&
-        choices.map((choice, index) => (
-          <button
-            key={index}
-            disabled={buttonsDisabled}
-            onClick={() => handlePlay(index)}
-          >
-            {choice}
-          </button>
-        ))}
-      <h1>History</h1>
+      {choices.length > 0 && (
+        <div className='button-container'>
+          {choices.map((choice, index) => (
+            <button
+              key={index}
+              className='choice-button'
+              disabled={buttonsDisabled}
+              onClick={() => handlePlay(index)}
+            >
+              {choice}
+            </button>
+          ))}
+        </div>
+      )}
+      <h1 className='history-title'>History</h1>
       {history.length > 0 && (
-        <>
+        <div className='history-container'>
           {history.map((move, index) => (
-            <p key={`${move[0]}${move[1]}${move[2]}-${index}`}>
+            <p
+              key={`${move[0]}${move[1]}${move[2]}-${index}`}
+              className='history-item'
+            >
               Player's move: {choices[move[0]]} | Computer's move:{' '}
               {choices[move[1]]} |{' '}
               {move[2] === RESULT.WIN
@@ -90,8 +98,10 @@ const App = () => {
                   : "It's a tie"}
             </p>
           ))}
-          <button onClick={handleReset}>Reset</button>
-        </>
+          <button className='reset-button' onClick={handleReset}>
+            Reset
+          </button>
+        </div>
       )}
     </div>
   );
