@@ -3,15 +3,11 @@ import dotenv from 'dotenv';
 import axios from 'axios';
 import cors from 'cors';
 import Joi from 'joi';
-import http from 'http';
-import { Server } from 'socket.io';
 import { choices, RESULT, corsOptions, rules } from './constants.js';
 
 dotenv.config();
 
 const app = express();
-const server = http.createServer(app);
-const io = new Server(server);
 
 const PORT = process.env.PORT || 3000;
 const EXTERNAL_API = process.env.EXTERNAL_API;
@@ -20,7 +16,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 const playerSchema = Joi.object({
-  player: Joi.number().integer().min(1).max(5).required(),
+  player: Joi.number().integer().min(0).max(4).required(),
 });
 
 const getRandomIndex = async () => {
@@ -39,24 +35,7 @@ const play = (player, player2) => {
   return RESULT.LOSE;
 };
 
-// Socket
-let arr = [];
-let playingArray = [];
-
-io.on('connection', socket => {
-  console.log('user connected');
-  // Listen for a 'play' event
-  socket.on('play', data => {
-    console.log('Play event data:', data);
-    // Broadcast the play result to all connected clients
-    io.emit('playResult', data);
-  });
-  socket.on('disconnect', e => {
-    console.log('user disconnected');
-  });
-});
-
-// API
+/* API */
 
 app.get('/', (_, res) => {
   res.redirect('/choices');
@@ -69,7 +48,6 @@ app.get('/choices', (_, res) => {
 app.get('/choice', async (_, res) => {
   try {
     const randomIndex = await getRandomIndex();
-    console.log(randomIndex);
     res.json(choices[randomIndex % 5]);
   } catch (error) {
     console.error('Error fetching random choice:', error.message);

@@ -38,14 +38,14 @@ const ChoiceList = ({
     setButtonsDisabled(true);
     try {
       const response = await api.post<PlayResult>(`/play`, {
-        player: choice + 1,
+        player: choice,
       });
-      const { computer, results } = response.data;
-
+      const { player, computer, results } = response.data;
+      console.log(computer);
       onSetHistory(prevHistory => {
         const newRecord: HistoryRecord = {
-          player1: choice,
-          player2: computer - 1,
+          player1: player,
+          player2: computer,
           result: results,
         };
         const newHistory: HistoryRecord[] = [...prevHistory, newRecord];

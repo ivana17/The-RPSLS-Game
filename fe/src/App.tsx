@@ -9,14 +9,22 @@ const App = () => {
   const [history, setHistory] = useState<HistoryRecord[]>([]);
 
   return (
-    <>
-      <ChoiceList
-        choices={choices}
-        onSetChoices={setChoices}
-        onSetHistory={setHistory}
-      />
-      <History history={history} choices={choices} onSetHistory={setHistory} />
-    </>
+    <div className='app-container'>
+      <div className='choices-container'>
+        <ChoiceList
+          choices={choices}
+          onSetChoices={setChoices}
+          onSetHistory={setHistory}
+        />
+      </div>
+      <div className='history-container'>
+        <History
+          history={history}
+          choices={choices}
+          onSetHistory={setHistory}
+        />
+      </div>
+    </div>
   );
 };
 

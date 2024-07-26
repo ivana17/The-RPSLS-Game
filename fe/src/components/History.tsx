@@ -1,32 +1,41 @@
+import { useEffect, useRef } from 'react';
 import { RESULT } from '../constants';
 import { HistoryProps, HistoryRecord } from '../interfaces';
-import ResetButton from './ResetButton';
 
-const History = ({ choices, history, onSetHistory }: HistoryProps) => {
+const History = ({ choices, history }: HistoryProps) => {
+  const historyEndRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (historyEndRef.current) {
+      historyEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [history]);
+
   return (
-    <>
+    <div className='history-list'>
       {history.length > 0 && (
         <>
-          <ResetButton onSetHistory={onSetHistory} />
-          <div className='history-container'>
-            {history.map((record: HistoryRecord, index) => (
-              <p
-                key={`${record.player1}${record.player2}${record.result}-${index}`}
-                className='history-item'
+          {history.map((record: HistoryRecord, index) => (
+            <div
+              key={`${record.player1}${record.player2}${record.result}-${index}`}
+              className='history-item'
+            >
+              <div
+                className={`history-choice ${record.result === RESULT.WIN && 'winner'}`}
               >
-                Player's move: {choices[record.player1]} | Computer's move:{' '}
-                {choices[record.player2]} |{' '}
-                {record.result === RESULT.WIN
-                  ? 'Player won'
-                  : record.result === RESULT.LOSE
-                    ? 'Computer won'
-                    : "It's a tie"}
-              </p>
-            ))}
-          </div>
+                {choices[record.player1]}
+              </div>
+              <div
+                className={`history-choice ${record.result === RESULT.LOSE && 'winner'}`}
+              >
+                {choices[record.player2]}
+              </div>
+            </div>
+          ))}
+          <div ref={historyEndRef} />
         </>
       )}
-    </>
+    </div>
   );
 };
 
