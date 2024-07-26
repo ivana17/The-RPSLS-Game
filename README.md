@@ -84,7 +84,7 @@ The project is split into two main parts:
 3. Start the React app:
 
    ```
-   npm start
+    npm run dev
    ```
 
    The React app will start on `http://localhost:5173`.
