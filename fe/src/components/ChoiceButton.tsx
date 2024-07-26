@@ -1,4 +1,3 @@
-import React from 'react';
 import './ChoiceButton.css';
 
 interface ChoiceButtonProps {
@@ -6,8 +5,7 @@ interface ChoiceButtonProps {
   buttonsDisabled: boolean;
   onPlay: (index: number) => void;
   index: number;
-  isFlipping?: boolean;
-  isQuarterFlipping?: boolean; // Add this line
+  isFlipping: boolean;
 }
 
 const ChoiceButton = ({
@@ -15,17 +13,13 @@ const ChoiceButton = ({
   buttonsDisabled,
   onPlay,
   index,
-  isFlipping = false,
-  isQuarterFlipping = false, // Default to false
+  isFlipping,
 }: ChoiceButtonProps) => {
   return (
-    <div
-      className={`choice-button-wrapper ${
-        isFlipping ? 'flipping' : isQuarterFlipping ? 'quarter-flip' : ''
-      }`}
-    >
+    <div className={`choice-button-wrapper ${isFlipping ? 'flipping' : ''}`}>
       <button
-        className={`choice-button ${isFlipping || isQuarterFlipping ? 'flipped' : ''}`}
+        key={index}
+        className='choice-button'
         disabled={buttonsDisabled}
         onClick={() => onPlay(index)}
       >

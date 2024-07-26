@@ -19,7 +19,6 @@ const ChoiceList = ({
   const [error, setError] = useState<string | null>(null);
   const [errorVisible, setErrorVisible] = useState(false);
   const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
-  const [quarterFlipIndex, setQuarterFlipIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchChoices = async () => {
@@ -41,8 +40,6 @@ const ChoiceList = ({
   const handlePlay = async (choice: number) => {
     setButtonsDisabled(true);
     setFlippingIndex(choice); // Set the flipping index to disable other buttons
-    setQuarterFlipIndex(null); // Reset quarter flip index
-
     try {
       const response = await api.post<PlayResult>(`/play`, {
         player: choice,
@@ -70,10 +67,6 @@ const ChoiceList = ({
     } finally {
       setButtonsDisabled(false);
       setFlippingIndex(null); // Reset the flipping index
-
-      // Start the quarter flip animation for all buttons
-      setQuarterFlipIndex(null);
-      setTimeout(() => setQuarterFlipIndex(null), 1000); // Reset after animation duration
     }
   };
 
@@ -81,7 +74,7 @@ const ChoiceList = ({
     <>
       <ErrorMessage visible={errorVisible}>{error}</ErrorMessage>
       {choices.length > 0 && (
-        <div>
+        <div className='choices-container'>
           {choices.map((choice, index) => (
             <ChoiceButton
               key={index}
@@ -89,7 +82,6 @@ const ChoiceList = ({
               buttonsDisabled={buttonsDisabled}
               onPlay={handlePlay}
               isFlipping={flippingIndex === index}
-              isQuarterFlipping={quarterFlipIndex === index} // Pass the quarter flip state
             >
               <p>{choice}</p>
             </ChoiceButton>

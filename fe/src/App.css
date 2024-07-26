@@ -22,7 +22,7 @@ html,
 }
 
 .history-container {
-  height: 200px;
+  height: 350px;
   padding: 20px;
   overflow-y: auto;
   border-top: 1px solid #02c685;

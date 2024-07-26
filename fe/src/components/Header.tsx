@@ -8,12 +8,22 @@ interface HeaderProps {
 const Header = ({ children }: HeaderProps) => {
   const [isModalVisible, setModalVisible] = useState(false);
 
+  const handleMouseEnter = () => {
+    console.log('Mouse Enter');
+    setModalVisible(true);
+  };
+
+  const handleMouseLeave = () => {
+    console.log('Mouse Leave');
+    setModalVisible(false);
+  };
+
   return (
     <div className='header'>
       <button
         className='rules-button'
-        onMouseEnter={() => setModalVisible(true)}
-        onMouseLeave={() => setModalVisible(false)}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         Rules
       </button>
