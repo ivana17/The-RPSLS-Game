@@ -18,6 +18,8 @@ const ChoiceList = ({
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [errorVisible, setErrorVisible] = useState(false);
+  const [flippingIndex, setFlippingIndex] = useState<number | null>(null);
+  const [quarterFlipIndex, setQuarterFlipIndex] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchChoices = async () => {
@@ -33,19 +35,19 @@ const ChoiceList = ({
       }
     };
 
-    console.log('Choices fetching.');
     fetchChoices();
-  }, []);
+  }, [onSetChoices]);
 
   const handlePlay = async (choice: number) => {
-    console.log('Game play.');
     setButtonsDisabled(true);
+    setFlippingIndex(choice); // Set the flipping index to disable other buttons
+    setQuarterFlipIndex(null); // Reset quarter flip index
+
     try {
       const response = await api.post<PlayResult>(`/play`, {
         player: choice,
       });
       const { player, computer, results } = response.data;
-      console.log(computer);
       onSetHistory(prevHistory => {
         const newRecord: HistoryRecord = {
           player1: player,
@@ -54,9 +56,8 @@ const ChoiceList = ({
         };
         const newHistory: HistoryRecord[] = [...prevHistory, newRecord];
 
-        // Ensure only the last MAX_HISTORY_SIZE records are kept
         if (newHistory.length > MAX_HISTORY_SIZE) {
-          newHistory.shift(); // Remove the oldest record
+          newHistory.shift();
         }
 
         return newHistory;
@@ -68,6 +69,11 @@ const ChoiceList = ({
       setTimeout(() => setErrorVisible(false), 5000);
     } finally {
       setButtonsDisabled(false);
+      setFlippingIndex(null); // Reset the flipping index
+
+      // Start the quarter flip animation for all buttons
+      setQuarterFlipIndex(null);
+      setTimeout(() => setQuarterFlipIndex(null), 1000); // Reset after animation duration
     }
   };
 
@@ -82,6 +88,8 @@ const ChoiceList = ({
               index={index}
               buttonsDisabled={buttonsDisabled}
               onPlay={handlePlay}
+              isFlipping={flippingIndex === index}
+              isQuarterFlipping={quarterFlipIndex === index} // Pass the quarter flip state
             >
               <p>{choice}</p>
             </ChoiceButton>
