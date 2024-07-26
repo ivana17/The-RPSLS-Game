@@ -36,7 +36,7 @@ The project is split into two main parts:
 1. Clone the repository:
 
    ```
-   git clone https://github.com/your-username/the-rpsls-game.git
+   git clone https://github.com/ivana17/The-RPSLS-Game.git
    cd the-rpsls-game/be
    ```
 
@@ -57,7 +57,7 @@ The project is split into two main parts:
 ### API Endpoints
 
 - **`GET /api/choices`**: Returns the list of possible choices.
-- **`POST /api/choice`**: Submits the player's choice and returns
+- **`POST /api/choice`**: Returns a random computer generated choice
 - **`POST /api/play`**: Submits the player's choice and returns the result of the game.
 
 ## Frontend Setup
