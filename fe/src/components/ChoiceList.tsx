@@ -8,6 +8,7 @@ import {
 } from '../interfaces';
 import api from '../api/axios';
 import { MAX_HISTORY_SIZE } from '../constants';
+import ErrorMessage from './ErrorMessage';
 
 const ChoiceList = ({
   choices,
@@ -16,6 +17,7 @@ const ChoiceList = ({
 }: ChoiceListProps) => {
   const [buttonsDisabled, setButtonsDisabled] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [errorVisible, setErrorVisible] = useState(false);
 
   useEffect(() => {
     const fetchChoices = async () => {
@@ -26,6 +28,8 @@ const ChoiceList = ({
       } catch (error: any) {
         setError('Error fetching choices. Please refresh the page.');
         console.error('Error:', error.message);
+        setErrorVisible(true);
+        setTimeout(() => setErrorVisible(false), 5000);
       }
     };
 
@@ -60,14 +64,16 @@ const ChoiceList = ({
     } catch (error: any) {
       setError('Some error occurred. Please try again.');
       console.error('Error playing the game:', error.message);
+      setErrorVisible(true);
+      setTimeout(() => setErrorVisible(false), 5000);
     } finally {
       setButtonsDisabled(false);
     }
   };
 
   return (
-    <div>
-      {error && <p>{error}</p>}
+    <>
+      <ErrorMessage visible={errorVisible}>{error}</ErrorMessage>
       {choices.length > 0 && (
         <div>
           {choices.map((choice, index) => (
@@ -82,7 +88,7 @@ const ChoiceList = ({
           ))}
         </div>
       )}
-    </div>
+    </>
   );
 };
 

@@ -2,7 +2,9 @@ import { useState } from 'react';
 import './App.css';
 import ChoiceList from './components/ChoiceList';
 import History from './components/History';
+import Header from './components/Header';
 import { HistoryRecord } from './interfaces';
+import ResetButton from './components/ResetButton';
 
 const App = () => {
   const [choices, setChoices] = useState<string[]>([]);
@@ -10,6 +12,9 @@ const App = () => {
 
   return (
     <div className='app-container'>
+      <Header>
+        {history.length > 0 && <ResetButton onSetHistory={setHistory} />}
+      </Header>
       <div className='choices-container'>
         <ChoiceList
           choices={choices}

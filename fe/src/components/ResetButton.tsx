@@ -1,4 +1,5 @@
 import { ResetButtonProps } from '../interfaces';
+import './ResetButton.css';
 
 const ResetButton = ({ onSetHistory }: ResetButtonProps) => {
   const handleReset = () => {
@@ -6,7 +7,11 @@ const ResetButton = ({ onSetHistory }: ResetButtonProps) => {
     onSetHistory([]);
   };
 
-  return <button onClick={handleReset}>Reset</button>;
+  return (
+    <button className='reset-button' onClick={handleReset}>
+      Reset
+    </button>
+  );
 };
 
 export default ResetButton;
